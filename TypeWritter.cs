@@ -25,9 +25,46 @@ public class TypeWritter : MonoBehaviour {
 	private bool controle_space = false; 
 	private bool stopTalk;
 	[Range(0f, 1f)] public float delay;
+	private GameObject myGo;
 
 	void Start(){
-		
+		GameObject myGo = new GameObject();
+        Canvas canvas = myGo.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.WorldSpace;
+
+        CanvasScaler cs = myGo.AddComponent<CanvasScaler>();
+		cs.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+		cs.referenceResolution = new Vector2(1280, 720);
+
+        GraphicRaycaster gr = myGo.AddComponent<GraphicRaycaster>();
+        myGo.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 3.0f);
+        myGo.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 3.0f);
+
+        GameObject g2 = new GameObject();
+        g2.name = "Text";
+        g2.transform.parent = myGo.transform;
+
+        Text t = g2.AddComponent<Text>();
+        g2.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 3.0f);
+        g2.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 3.0f);
+        t.alignment = TextAnchor.MiddleCenter;
+        t.horizontalOverflow = HorizontalWrapMode.Overflow;
+        t.verticalOverflow = VerticalWrapMode.Overflow;
+
+        Font ArialFont = (Font)Resources.GetBuiltinResource (typeof(Font), "Arial.ttf");
+        t.font = ArialFont;
+        t.fontSize = 7;
+        t.text = "Test";
+        t.enabled = true;
+        t.color = Color.black;
+ 
+        myGo.name = "CanvasTypeWritter";
+        bool bWorldPosition = false;
+ 
+        myGo.GetComponent<RectTransform>().SetParent(this.transform, bWorldPosition);
+        //g.transform.localPosition = new Vector3(0f, fTextLabelHeight, 0f);
+        myGo.transform.localScale = new Vector3(1.0f / this.transform.localScale.x * 0.1f, 1.0f / this.transform.localScale.y * 0.1f, 1.0f / this.transform.localScale.z * 0.1f );
+
 	}
 
 	void Update () {
