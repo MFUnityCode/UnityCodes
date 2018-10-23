@@ -11,24 +11,42 @@ using UnityEditor;
  */
 public class TypeWritter : MonoBehaviour {
 
+	//Static Variable;
+	public static TypeWritter instance;
+
+	[SerializeField] private Text textBar;
+	[SerializeField] private Text characterName;
+	[SerializeField] private Text endIndicator;
+	[SerializeField] private GameObject hud;
+	[Range(0f, 0.5f)] public float delay;
 	private string text; 
 	private char[] letters;
 	private string[] dialogues;
-	public Text textBar;
-	public Text characterName;
-	public Text endIndicator;
-	public GameObject hud;
 	private bool nomepersonagem = true;
 	private bool skipDelay = false;
 	private bool controle_space = false; 
 	private bool stopTalk;
-	[Range(0f, 0.5f)] public float delay;
+	private KeyCode skipKey;
+
+	void Awake() {
+		if(instance == null){
+			instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		else{
+			Destroy(gameObject);
+		}
+	}
 
 	void Start(){
+
+		//KeyCode to skip dialogue;
+		skipKey = KeyCode.Space;
+
 		if(!Directory.Exists(Path.Combine(Application.dataPath, @"Assets/StreamingAssets"))){
 			Directory.CreateDirectory(@"Assets/StreamingAssets");
 		}
-	}
+	}//end: Start
 
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Space)) {
@@ -36,7 +54,7 @@ public class TypeWritter : MonoBehaviour {
 				skipDelay = true;
 			}
 		}
-	}
+	}//end: Update;
 
     public void Type(string fileName){
         //read file .txt
@@ -47,8 +65,7 @@ public class TypeWritter : MonoBehaviour {
 
 		//begin coroutine;
 		StartCoroutine (Typerwrite());
-	}
-
+	}//end: Type;
 
 	private IEnumerator Typerwrite(){
 
@@ -75,7 +92,7 @@ public class TypeWritter : MonoBehaviour {
 			}
 			yield return new WaitForSeconds (0.1f);
 
-			while (Input.GetKeyDown (KeyCode.Space) == false) {
+			while (Input.GetKeyDown (skipKey) == false) {
 				controle_space = false;
 				yield return new WaitForSeconds (0.005f);
 				endIndicator.text = "Press Space";
