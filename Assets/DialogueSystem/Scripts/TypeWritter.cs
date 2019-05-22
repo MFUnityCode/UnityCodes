@@ -7,18 +7,23 @@ using UnityEditor;
 
 /*
 	Script by Mateus Francisco
-	Description: This is a code...
- */
+	Description: This is a basic dialogue code, create your dialogues :)
+*/
 public class TypeWritter : MonoBehaviour {
 
 	//Static Variable;
 	public static TypeWritter instance;
 
+	[Header("Settings")]
+	[Range(0.001f, 0.3f)] public float delay;
+	[SerializeField] private KeyCode skipKey;
+
+	[Header("UI Components")]
 	[SerializeField] private Text textBar;
 	[SerializeField] private Text characterName;
 	[SerializeField] private Text endIndicator;
 	[SerializeField] private GameObject hud;
-	[Range(0f, 0.5f)] public float delay;
+
 	private string text; 
 	private char[] letters;
 	private string[] dialogues;
@@ -26,7 +31,6 @@ public class TypeWritter : MonoBehaviour {
 	private bool skipDelay = false;
 	private bool controle_space = false; 
 	private bool stopTalk;
-	private KeyCode skipKey;
 
 	void Awake() {
 		if(instance == null){
@@ -41,7 +45,7 @@ public class TypeWritter : MonoBehaviour {
 	void Start(){
 
 		//KeyCode to skip dialogue;
-		skipKey = KeyCode.Space;
+		//skipKey = KeyCode.Space;
 
 		if(!Directory.Exists(Path.Combine(Application.dataPath, @"Assets/StreamingAssets"))){
 			Directory.CreateDirectory(@"Assets/StreamingAssets");
@@ -95,7 +99,7 @@ public class TypeWritter : MonoBehaviour {
 			while (Input.GetKeyDown (skipKey) == false) {
 				controle_space = false;
 				yield return new WaitForSeconds (0.005f);
-				endIndicator.text = "Press Space";
+				endIndicator.text = "Press " + skipKey;
 			}
 
 			textBar.text = "";

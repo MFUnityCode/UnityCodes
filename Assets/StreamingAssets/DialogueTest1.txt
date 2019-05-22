@@ -1,2 +1,2 @@
-Rodrigo/Alô todos me conhecem@
-Mateus/Aleatoria fala é essa!
+﻿Ana/Olá, este é um exemplo do código de dialogo@
+Ana/Você usa este padrão "Nome/Fala", ok?
